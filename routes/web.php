@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\orderStatisticsController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,17 +50,15 @@ Route::middleware('guest')->group(function() {
 // Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 
 
-// Начало группы маршрутов с пространством имен 'App\Http\Controllers\Auth'
-Route::group(['namespace'=> 'App\Http\Controllers\Auth'], function(){
      // Определение маршрута GET для страницы регистрации пользователя
-    Route::get('/register', 'RegisterController@showRegistrationForm')->name('register');
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
      // Этот маршрут будет доступен по URL-адресу '/register'
      // Метод 'showRegistrationForm' контроллера 'RegisterController' будет вызван при обращении к маршруту
        // Все контроллеры в этой группе будут искаться в пространстве имен 'App\Http\Controllers\Auth'
     // Маршруту присвоено имя 'register', которое может быть использовано для генерации ссылок
     Route::post('/register',[RegisterController::class, 'createUserStore'])->name('createUser');
     
-});
+
 
 
 Route::middleware('auth')->group(function() {
@@ -68,7 +67,6 @@ Route::post('logout',[AuthenticatedSessionController::class,'destroy'])->name('l
 
 Route::get('/home', function () {
     return view('layouts.home');
-})->middleware('auth');
+})->middleware('auth')->name('home');
 
-
-
+Route::get('/statistics',[orderStatisticsController::class,'StatisticsController'])->name('statistics');
